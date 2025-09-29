@@ -1,1 +1,5 @@
+User-agent: *
+Allow: /
+
+Sitemap: https://mathurshaab.github.io/rajasthan-exam-negative-marking-calculator/sitemap.xml
 
