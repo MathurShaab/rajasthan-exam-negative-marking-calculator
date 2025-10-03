@@ -62,7 +62,7 @@ function calculateScore() {
 
     // Display results
     document.getElementById('correctAnswers').textContent = rightAnswers;
-    document.getElementById('wrongAnswers').textContent = wrongAnswers;
+    document.getElementById('correctAnswers').textContent = wrongAnswers;
     document.getElementById('totalScore').textContent = totalScore.toFixed(2);
     document.getElementById('positiveMarks').textContent = '+' + positiveMarks.toFixed(2);
     document.getElementById('negativeMarks').textContent = '-' + negativeMarks.toFixed(2);
