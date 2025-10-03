@@ -3,7 +3,7 @@ function calculateScore() {
     const totalQuestions = parseInt(document.getElementById('totalQuestions').value) || 0;
     const maxMarks = parseFloat(document.getElementById('maxMarks').value) || 0;
     const attemptedQuestions = parseInt(document.getElementById('attemptedQuestions').value) || 0;
-    const rightAnswers = parseInt(document.getElementById('rightQuestions').value) || 0;
+    const wrongAnswers = parseInt(document.getElementById('wrongQuestions').value) || 0;
     const negativeRatio = parseFloat(document.getElementById('negativeRatio').value) || 0;
 
     // Validate inputs
@@ -17,8 +17,8 @@ function calculateScore() {
         return;
     }
 
-    if (rightAnswers > attemptedQuestions) {
-        alert('Right answers cannot exceed attempted questions');
+    if (wrongAnswers > attemptedQuestions) {
+        alert('Wrong answers cannot exceed attempted questions');
         return;
     }
 
@@ -26,16 +26,16 @@ function calculateScore() {
     const marksPerQuestion = maxMarks / totalQuestions;
 
     // Calculate values
-    const wrongAnswers = attemptedQuestions - rightAnswers;
+    const correctAnswers = attemptedQuestions - wrongAnswers;
     const unattemptedQuestions = totalQuestions - attemptedQuestions;
 
     // Calculate scores
-    const positiveMarks = rightAnswers * marksPerQuestion;
+    const positiveMarks = correctAnswers * marksPerQuestion;
     const negativeMarks = wrongAnswers * marksPerQuestion * negativeRatio;
     const totalScore = positiveMarks - negativeMarks;
 
     // Calculate percentages
-    const accuracy = attemptedQuestions > 0 ? ((rightAnswers / attemptedQuestions) * 100).toFixed(2) : 0;
+    const accuracy = attemptedQuestions > 0 ? ((correctAnswers / attemptedQuestions) * 100).toFixed(2) : 0;
     const percentage = maxMarks > 0 ? ((totalScore / maxMarks) * 100).toFixed(2) : 0;
 
     // Performance analysis
@@ -61,8 +61,7 @@ function calculateScore() {
     }
 
     // Display results
-    document.getElementById('correctAnswers').textContent = rightAnswers;
-    document.getElementById('correctAnswers').textContent = wrongAnswers;
+    document.getElementById('correctAnswers').textContent = correctAnswers;
     document.getElementById('totalScore').textContent = totalScore.toFixed(2);
     document.getElementById('positiveMarks').textContent = '+' + positiveMarks.toFixed(2);
     document.getElementById('negativeMarks').textContent = '-' + negativeMarks.toFixed(2);
@@ -78,7 +77,7 @@ function calculateScore() {
 
     // Store calculation in session memory
     window.lastCalculation = {
-        totalQuestions, maxMarks, attemptedQuestions, rightAnswers, wrongAnswers,
+        totalQuestions, maxMarks, attemptedQuestions, wrongAnswers, correctAnswers,
         marksPerQuestion: marksPerQuestion.toFixed(2), negativeRatio, totalScore: totalScore.toFixed(2),
         timestamp: new Date().toISOString()
     };
@@ -89,7 +88,7 @@ function resetCalculator() {
     document.getElementById('totalQuestions').value = '';
     document.getElementById('maxMarks').value = '';
     document.getElementById('attemptedQuestions').value = '';
-    document.getElementById('rightQuestions').value = '';
+    document.getElementById('wrongQuestions').value = '';
     document.getElementById('negativeRatio').value = '0';
     document.getElementById('resultSection').classList.remove('show');
     document.getElementById('totalQuestions').focus();
@@ -106,8 +105,6 @@ document.addEventListener('keydown', function(event) {
 document.addEventListener('DOMContentLoaded', function() {
     document.getElementById('totalQuestions').focus();
 });
-
-// Presets for exam types
 function setPreset(examType) {
     const presets = {
         'ras': { total: 150, max: 200, negative: '0.33' },
@@ -124,7 +121,7 @@ function setPreset(examType) {
         document.getElementById('maxMarks').value = preset.max;
         document.getElementById('negativeRatio').value = preset.negative;
         document.getElementById('attemptedQuestions').value = '';
-        document.getElementById('rightQuestions').value = '';
+        document.getElementById('wrongAnswers').value = '';
         document.getElementById('resultSection').classList.remove('show');
     }
 }
