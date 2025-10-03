@@ -4,7 +4,7 @@ function calculateScore() {
     const totalQuestions = parseInt(document.getElementById('totalQuestions').value) || 0;
     const maxMarks = parseFloat(document.getElementById('maxMarks').value) || 0;
     const attemptedQuestions = parseInt(document.getElementById('attemptedQuestions').value) || 0;
-    const rightAnswers = parseInt(document.getElementById('rightQuestions').value) || 0;
+    const rightAnswers = parseInt(document.getElementById('right').value) || 0;
     const negativeRatio = parseFloat(document.getElementById('negativeRatio').value) || 0;
 
     // Validate inputs
