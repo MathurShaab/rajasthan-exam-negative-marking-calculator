@@ -1,10 +1,9 @@
-// Calculate Score
 function calculateScore() {
     // Get input values
     const totalQuestions = parseInt(document.getElementById('totalQuestions').value) || 0;
     const maxMarks = parseFloat(document.getElementById('maxMarks').value) || 0;
     const attemptedQuestions = parseInt(document.getElementById('attemptedQuestions').value) || 0;
-    const rightAnswers = parseInt(document.getElementById('right').value) || 0;
+    const rightAnswers = parseInt(document.getElementById('rightQuestions').value) || 0;
     const negativeRatio = parseFloat(document.getElementById('negativeRatio').value) || 0;
 
     // Validate inputs
@@ -23,23 +22,20 @@ function calculateScore() {
         return;
     }
 
-    // Auto calculate wrong answers
-    const wrongAnswers = attemptedQuestions - rightAnswers;
-
-    // Marks per question
+    // Marks per question (auto-calculated)
     const marksPerQuestion = maxMarks / totalQuestions;
 
     // Calculate values
-    const correctAnswers = rightAnswers;
+    const wrongAnswers = attemptedQuestions - rightAnswers;
     const unattemptedQuestions = totalQuestions - attemptedQuestions;
 
     // Calculate scores
-    const positiveMarks = correctAnswers * marksPerQuestion;
+    const positiveMarks = rightAnswers * marksPerQuestion;
     const negativeMarks = wrongAnswers * marksPerQuestion * negativeRatio;
     const totalScore = positiveMarks - negativeMarks;
 
     // Calculate percentages
-    const accuracy = attemptedQuestions > 0 ? ((correctAnswers / attemptedQuestions) * 100).toFixed(2) : 0;
+    const accuracy = attemptedQuestions > 0 ? ((rightAnswers / attemptedQuestions) * 100).toFixed(2) : 0;
     const percentage = maxMarks > 0 ? ((totalScore / maxMarks) * 100).toFixed(2) : 0;
 
     // Performance analysis
@@ -65,7 +61,7 @@ function calculateScore() {
     }
 
     // Display results
-    document.getElementById('correctAnswers').textContent = correctAnswers;
+    document.getElementById('correctAnswers').textContent = rightAnswers;
     document.getElementById('wrongAnswers').textContent = wrongAnswers;
     document.getElementById('totalScore').textContent = totalScore.toFixed(2);
     document.getElementById('positiveMarks').textContent = '+' + positiveMarks.toFixed(2);
@@ -82,13 +78,13 @@ function calculateScore() {
 
     // Store calculation in session memory
     window.lastCalculation = {
-        totalQuestions, maxMarks, attemptedQuestions, rightAnswers, wrongAnswers, correctAnswers,
+        totalQuestions, maxMarks, attemptedQuestions, rightAnswers, wrongAnswers,
         marksPerQuestion: marksPerQuestion.toFixed(2), negativeRatio, totalScore: totalScore.toFixed(2),
         timestamp: new Date().toISOString()
     };
 }
 
-// Reset calculator
+// Reset calculator function
 function resetCalculator() {
     document.getElementById('totalQuestions').value = '';
     document.getElementById('maxMarks').value = '';
@@ -111,7 +107,7 @@ document.addEventListener('DOMContentLoaded', function() {
     document.getElementById('totalQuestions').focus();
 });
 
-// Preset values
+// Presets for exam types
 function setPreset(examType) {
     const presets = {
         'ras': { total: 150, max: 200, negative: '0.33' },
@@ -122,7 +118,7 @@ function setPreset(examType) {
         'fourth_grade': { total: 120, max: 200, negative: '0.33' }
     };
 
-    if (presets[examType]) {
+    if(presets[examType]) {
         const preset = presets[examType];
         document.getElementById('totalQuestions').value = preset.total;
         document.getElementById('maxMarks').value = preset.max;
